@@ -5,6 +5,16 @@ import random
 import speech
 import music
 
+class Ship:
+    ...
+
+class Battleship(Ship):
+    ...
+class Frigate(Ship):
+    ...
+class Dingy(Ship):
+    ...
+    
 class Board:
     def __init__(self):
         """ Initialize a board with 3 vessles.
@@ -50,9 +60,19 @@ class Board:
         print("Frigate:    {}".format(self.frgt))
         print("Dingy:      {}".format(self.dingy))
         
-        self.ships = '00900:00900:00900:00000:99009'
-        display.show(Image(self.ships))
+        # self.ships = '00900:00900:00900:00000:99009'
+        # display.show(Image(self.ships))
 
+    def show_board(self):
+        display.clear()
+        for ship in (self.btlshp,self.dingy,self.frgt):
+            for coord in ship:
+                display.set_pixel(coord[0],coord[1],9)
+
+    def get_ship_status(self):
+        # return the current status (get_pixel?) of the ship
+        # under question.
+        ...
     def hit_or_miss(self,x:int,y:int) -> int:
         """ Given target x,y 
         return 0 for no hit
@@ -71,8 +91,19 @@ class Board:
             raise ValueError("Not a miss and not a hit either at {},{}".format(x,y))
         
         
-    def get_board(self):
-        return self.ships
+    def get_board(self)->tuple:
+        return (self.btlshp,self.frgt,self.dingy)
+
+    def sink(self,s:int):
+        """ If the ship is hit once, delete the variable?
+        There can be better ways of doing this... like dimming
+        the leds associated with this sunken ship."""
+        if s == 3:
+            del self.btlshp
+        if s == 2:
+            del self.frgt
+        if s == 1:
+            del self.dingy
 
 def init_formation():
     # Create a formation of ships 
