@@ -2,6 +2,8 @@
 from microbit import *
 import radio
 import random
+import speech
+import music
 
 class Board:
     def __init__(self):
@@ -71,9 +73,6 @@ class Board:
         
     def get_board(self):
         return self.ships
-
-def set_ships():
-    ...
 
 def init_formation():
     # Create a formation of ships 
@@ -156,10 +155,19 @@ def main():
                         # display.scroll("type={}".format(type(target)))
                         x,y = target.split(",")
                         display.set_pixel(int(x),int(y),4)
-                        break
+                        yn = b.hit_or_miss(int(x),int(y))
+                        if yn == 0:
+                            music.play(music.WAWAWAWAA)
+                        if yn == 1:
+                            speech.say("You sank my dingy")
+                        if yn == 2:
+                            speech.say("You sank my frigate")
+                        if yn == 3:
+                            speech.say("You sank my battleship")
                     sleep(100)
                 my_turn = True
-        
+
         
 if __name__ == "__main__":
+
     main()
