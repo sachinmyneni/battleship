@@ -5,8 +5,31 @@ import random
 import speech
 import music
 
+def abstractmethond(f):
+    return f
+    
 class Ship:
-    ...
+    def __init__(self,leds):
+        self.leds = leds
+
+    @abstractmethond
+    def get_status(self):
+        one = self.leds.pop()
+        return display.get_pixel(one[0],one[1])
+
+    @abstractmethond
+    def set_status(self):
+        if self.get_status() == 9:
+            new = 4
+        if self.get_status() == 4:
+            new = 0
+        else:
+            new = 0
+        self.set_levels(new)
+
+    def set_levels(self,new):
+        for led in self.leds:
+            display.set_pixel(led[0],led[1],new)
 
 class Battleship(Ship):
     ...
