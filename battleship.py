@@ -13,8 +13,8 @@ class Ship:
     def __init__(self,leds):
         self.leds = leds
 
-    def __str__(self):
-        return(f'{__class__.__name__}:{self.leds}')
+    def __repr__(self):
+        return ("{}:{}".format(self.__class__.__name__,self.leds))
         
     def get_status(self):
         one = self.leds.pop()
@@ -47,7 +47,8 @@ class Board:
         2 frigate (length=2)
         3 battleship (length=3)
         """
-        random.seed(int(temperature()))
+        # random.seed(int(temperature()))
+        random.seed(42)
         # initialize battleship
         x = random.randrange(3)
         y = random.randrange(3)
@@ -86,9 +87,9 @@ class Board:
                 ...
         d = Dingy(self.dingy)
         
-        print("Battleship: {}".format(self.btlshp))
-        print("Frigate:    {}".format(self.frgt))
-        print("Dingy:      {}".format(self.dingy))
+        print("{}".format(b))
+        print("{}".format(f))
+        print("{}".format(d))
         
         # self.ships = '00900:00900:00900:00000:99009'
         # display.show(Image(self.ships))
@@ -177,13 +178,18 @@ def fire(x:int,y:int):
     radio.send(str(x)+","+str(y))
 
 def show_my_ships(form:str):
-    display.show(Image(form))    
-
+    try:
+        display.show(Image(form))    
+    except TypeError as te:
+        print(te)
+        print("Found: ")
+        print(type(form))
 
 def main():
     my_turn = True
     b = Board()
     formation = b.get_board()
+    print("Formation: {}".format(formation))
     radio.config(group=23)
     radio.on()
     while True:
