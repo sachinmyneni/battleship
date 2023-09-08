@@ -154,7 +154,7 @@ def my_target():
             display.clear()
             if x < 4 :
                 x = x + 1
-            if x > 4:
+            else:
                 x = x % 4
             print("X,y={},{}".format(x,y))
             display.set_pixel(x,y,9)
@@ -164,7 +164,7 @@ def my_target():
             print("x,Y={},{}".format(x,y))
             if y < 4 :
                 y = y + 1
-            if y > 4:
+            else:
                 y = y % 4
             display.set_pixel(x,y,9)
             
