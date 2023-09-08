@@ -1,13 +1,9 @@
-# Imports go at the top
 from microbit import *
 import radio
 import random
 import speech
 import music
 
-def abstractmethond(f):
-    return f
-    
 class Ship:
     len = 0
     def __init__(self,leds):
@@ -100,7 +96,7 @@ class Board:
             for coord in ship:
                 display.set_pixel(coord[0],coord[1],9)
 
-    def get_ship_status(self):
+    def get_ship_status(self, v:Ship):
         # return the current status (get_pixel?) of the ship
         # under question.
         ...
@@ -214,7 +210,8 @@ def main():
                 my_turn = False
                 break
             else:
-                show_my_ships(formation)
+                # show_my_ships(formation)
+                b.show_board()
                 while True:
                     target = radio.receive()
                     if type(target) is str:
