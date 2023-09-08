@@ -9,21 +9,23 @@ def abstractmethond(f):
     return f
     
 class Ship:
+    len = 0
     def __init__(self,leds):
         self.leds = leds
 
-    @abstractmethond
+    def __str__(self):
+        return(f'{__class__.__name__}:{self.leds}')
+        
     def get_status(self):
         one = self.leds.pop()
         return display.get_pixel(one[0],one[1])
 
-    @abstractmethond
     def set_status(self):
-        if self.get_status() == 9:
+        if self.get_status() == 9: # full life
             new = 4
-        if self.get_status() == 4:
+        if self.get_status() == 4: # 1 hit
             new = 0
-        else:
+        else:                      # sink
             new = 0
         self.set_levels(new)
 
@@ -32,11 +34,11 @@ class Ship:
             display.set_pixel(led[0],led[1],new)
 
 class Battleship(Ship):
-    ...
+    len = 3
 class Frigate(Ship):
-    ...
+    len = 2
 class Dingy(Ship):
-    ...
+    len = 1
     
 class Board:
     def __init__(self):
@@ -55,6 +57,8 @@ class Board:
         else:
             self.btlshp = {(x,y),(x,y+1),(x,y+2)}
 
+        b = Battleship(self.btlshp)
+
         # initialize frigate
         while True:
             p = random.randrange(4)
@@ -70,6 +74,8 @@ class Board:
             else:
                 ...
 
+        f = Frigate(self.frgt)
+        
         while True:
             g = random.randint(0,4)
             h = random.randint(0,4)
@@ -78,7 +84,8 @@ class Board:
                 break
             else:
                 ...
-
+        d = Dingy(self.dingy)
+        
         print("Battleship: {}".format(self.btlshp))
         print("Frigate:    {}".format(self.frgt))
         print("Dingy:      {}".format(self.dingy))
@@ -218,6 +225,8 @@ def main():
                             speech.say("You sank my frigate")
                         if yn == 3:
                             speech.say("You sank my battleship")
+                        my_turn = True
+                        break
                     sleep(100)
                 my_turn = True
 
