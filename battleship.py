@@ -87,9 +87,6 @@ class Board:
         print("{}".format(f))
         print("{}".format(d))
         
-        # self.ships = '00900:00900:00900:00000:99009'
-        # display.show(Image(self.ships))
-
     def show_board(self):
         display.clear()
         for ship in (self.btlshp,self.dingy,self.frgt):
@@ -106,7 +103,9 @@ class Board:
         1 for dingy
         2 for frigate
         3 for battleship """
-        if {(x,y)}.isdisjoint(self.btlshp) and {(x,y)}.isdisjoint(self.frgt) and {(x,y)}.isdisjoint((self.dingy)):
+        if {(x,y)}.isdisjoint(self.btlshp) and \
+           {(x,y)}.isdisjoint(self.frgt) and \
+           {(x,y)}.isdisjoint((self.dingy)):
             return 0
         if not {(x,y)}.isdisjoint(self.btlshp):
             return 3
@@ -131,11 +130,6 @@ class Board:
             del self.frgt
         if s == 1:
             del self.dingy
-
-def init_formation():
-    # Create a formation of ships 
-    # either randomly or manually
-    return '00900:00900:00900:00000:99009'
 
 def my_target():
     # a blinking led that can be moved
@@ -215,8 +209,8 @@ def main():
                 while True:
                     target = radio.receive()
                     if type(target) is str:
-                        # display.scroll("target={}".format(target))
-                        # display.scroll("type={}".format(type(target)))
+                        display.scroll("target={}".format(target))
+                        display.scroll("type={}".format(type(target)))
                         x,y = target.split(",")
                         display.set_pixel(int(x),int(y),4)
                         yn = b.hit_or_miss(int(x),int(y))
