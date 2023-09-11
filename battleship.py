@@ -43,8 +43,8 @@ class Board:
         2 frigate (length=2)
         3 battleship (length=3)
         """
-        # random.seed(int(temperature()))
-        random.seed(42)
+        random.seed(int(temperature()))
+        # random.seed(42)
         # initialize battleship
         x = random.randrange(3)
         y = random.randrange(3)
@@ -176,24 +176,28 @@ def show_my_ships(form:str):
         print(type(form))
 
 def main():
+    # Set board
     my_turn = True
     b = Board()
     formation = b.get_board()
     print("Formation: {}".format(formation))
     radio.config(group=23)
     radio.on()
+    # Choose whose turn it is
     while True:
-        mine = random.choice((True,False))
-        radio.send("True" if mine else "False")
+        mine = "True" if random.choice((True,False)) else "False"
+        radio.send(mine)
         theirs = radio.receive()
         if theirs != mine and theirs != "begin":
-            my_turn = True if mine else False
+            my_turn = True if mine == "True" else False
             radio.send("begin")
             break
         if theirs == "begin":
-            sleep(200)
+            my_turn = False
             break
         sleep(100)
+
+    # Fight!
     while True:
         while True:
             if my_turn:
