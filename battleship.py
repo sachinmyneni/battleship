@@ -167,14 +167,6 @@ def fire(x:int,y:int):
     # the other microbit
     radio.send(str(x)+","+str(y))
 
-def show_my_ships(form:str):
-    try:
-        display.show(Image(form))    
-    except TypeError as te:
-        print(te)
-        print("Found: ")
-        print(type(form))
-
 def main():
     # Set board
     my_turn = True
@@ -212,6 +204,8 @@ def main():
                 b.show_board()
                 while True:
                     target = radio.receive()
+                    if target in ["True","False","begin"]:
+                        continue
                     if type(target) is str:
                         display.scroll("target={}".format(target))
                         display.scroll("type={}".format(type(target)))
