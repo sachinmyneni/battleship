@@ -158,7 +158,7 @@ def my_target():
                 y = y % 4
             display.set_pixel(x,y,9)
             
-        if button_a.is_pressed() and button_b.is_pressed():
+        if pin_logo.is_touched():
             return x,y
  
     
