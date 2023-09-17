@@ -209,8 +209,8 @@ def main():
                     if target in ["True","False","begin"]:
                         continue
                     if type(target) is str:
-                        display.scroll("target={}".format(target))
-                        display.scroll("type={}".format(type(target)))
+                        # display.scroll("target={}".format(target))
+                        # display.scroll("type={}".format(type(target)))
                         x,y = target.split(",")
                         display.set_pixel(int(x),int(y),4)
                         yn = b.hit_or_miss(int(x),int(y))
