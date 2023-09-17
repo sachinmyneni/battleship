@@ -184,8 +184,10 @@ def main():
             my_turn = True if mine == "True" else False
             radio.send("begin")
             break
+        if theirs == mine and theirs != "begin":
+            continue
         if theirs == "begin":
-            my_turn = False
+            radio.send("begin")
             break
         sleep(100)
 
