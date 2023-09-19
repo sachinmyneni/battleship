@@ -8,6 +8,7 @@ class Ship:
     len = 0
     def __init__(self,leds):
         self.leds = leds
+        self.status = 9 #starting brightness
 
     def __repr__(self):
         return ("{}:{}".format(self.__class__.__name__,self.leds))
@@ -16,18 +17,19 @@ class Ship:
         one = self.leds.pop()
         return display.get_pixel(one[0],one[1])
 
-    def set_status(self):
+    def hit(self):
         if self.get_status() == 9: # full life
-            new = 4
-        if self.get_status() == 4: # 1 hit
-            new = 0
+            self.status = 4
+        elif self.get_status() == 4: # 1 hit
+            self.status = 0
         else:                      # sink
-            new = 0
-        self.set_levels(new)
+            self.status = 0
 
-    def set_levels(self,new):
+    def set_levels(self):
+        print("Setting {}".format(self.__class__.__name__))
+        print("LEDS: {}@{}".format(self.leds,self.status))
         for led in self.leds:
-            display.set_pixel(led[0],led[1],new)
+            display.set_pixel(led[0],led[1],self.status)
 
 class Battleship(Ship):
     len = 3
@@ -54,7 +56,7 @@ class Board:
         else:
             self.btlshp = {(x,y),(x,y+1),(x,y+2)}
 
-        b = Battleship(self.btlshp)
+        self.b = Battleship(self.btlshp)
 
         # initialize frigate
         while True:
@@ -71,7 +73,7 @@ class Board:
             else:
                 ...
 
-        f = Frigate(self.frgt)
+        self.f = Frigate(self.frgt)
         
         while True:
             g = random.randint(0,4)
@@ -81,22 +83,20 @@ class Board:
                 break
             else:
                 ...
-        d = Dingy(self.dingy)
-        
-        print("{}".format(b))
-        print("{}".format(f))
-        print("{}".format(d))
+        self.d = Dingy(self.dingy)
         
     def show_board(self):
         display.clear()
-        for ship in (self.btlshp,self.dingy,self.frgt):
-            for coord in ship:
-                display.set_pixel(coord[0],coord[1],9)
+        for ship in (self.b,self.f,self.d):
+            ship.set_levels()
+            # for coord in ship.leds:
+            #     display.set_pixel(coord[0],coord[1],ship.get_status())
 
     def get_ship_status(self, v:Ship):
         # return the current status (get_pixel?) of the ship
         # under question.
-        ...
+        return v.get_status()
+        
     def hit_or_miss(self,x:int,y:int) -> int:
         """ Given target x,y 
         return 0 for no hit
@@ -202,15 +202,12 @@ def main():
                 my_turn = False
                 break
             else:
-                # show_my_ships(formation)
                 b.show_board()
                 while True:
                     target = radio.receive()
                     if target in ["True","False","begin"]:
                         continue
                     if type(target) is str:
-                        # display.scroll("target={}".format(target))
-                        # display.scroll("type={}".format(type(target)))
                         x,y = target.split(",")
                         display.set_pixel(int(x),int(y),4)
                         yn = b.hit_or_miss(int(x),int(y))
@@ -218,10 +215,13 @@ def main():
                             music.play(music.WAWAWAWAA)
                         if yn == 1:
                             speech.say("You sank my dingy")
+                            b.d.hit()
                         if yn == 2:
                             speech.say("You sank my frigate")
+                            b.f.hit()
                         if yn == 3:
                             speech.say("You sank my battleship")
+                            b.b.hit()
                         my_turn = True
                         break
                     sleep(100)
