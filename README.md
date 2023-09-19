@@ -1,5 +1,5 @@
 # Battleship
-Battleship game in BBC Microbit v2
+Battleship game in BBC micro:bit v2
 
 # Rules
 Players take turns to pick a target and fire. Even when they hit an enemy target the opponents gets the next chance.
